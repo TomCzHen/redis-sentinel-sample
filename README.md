@@ -1,6 +1,6 @@
 # 说明
 
-使用 Docker Compose 单机部署 Reids Sentinel 集群实例，仅用于开发环境。
+使用 Docker Compose 部署基于 Sentinel 的高可用 Redis 集群。
 
 项目地址：[https://github.com/TomCzHen/redis-sentinel-sample](https://github.com/TomCzHen/redis-sentinel-sample)
 
