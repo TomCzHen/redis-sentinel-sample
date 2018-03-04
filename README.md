@@ -4,7 +4,7 @@
 
 项目地址：[https://github.com/TomCzHen/redis-sentinel-sample](https://github.com/TomCzHen/redis-sentinel-sample)
 
-根据官方文档 [Redis Sentinel Documentation](https://redis.io/topics/sentinel) 中的 [Example 2: basic setup with three boxes](https://redis.io/topics/sentinel#example-2-basic-setup-with-three-boxes) 示例创建的实例，但因为是单机部署，所以不满足 Redis 实例 与 Sentinel 实例分别处于 3 台机器的要求，因此仅用于开发环境测试与学习。
+根据官方文档 [Redis Sentinel Documentation](https://redis.io/topics/sentinel) 中的 [Example 2: basic setup with three boxes](https://redis.io/topics/sentinel#example-2-basic-setup-with-three-boxes) 示例创建的实例，但因为是单机部署，所以不满足 Redis 实例与 Sentinel 实例分别处于 3 台机器的要求，因此仅用于开发环境测试与学习。
 
 ## 使用方法
 
@@ -13,6 +13,8 @@
 使用 `docker-compose pause master` 可以模拟对应的 Redis 实例不可用。
 
 使用 `docker-compose pause sentinel-1` 可以模拟对应的 Sentinel 实例不可用。
+
+使用 `docker-compose unpause service_name` 将暂停的容器恢复运行。
 
 使用支持 Sentinel 的客户端连接 `localhost:62379` 进行应用测试。
 
