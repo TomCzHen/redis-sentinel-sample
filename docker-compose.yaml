@@ -1,0 +1,110 @@
+version: "3.3"
+services:
+  # Redis configuration file example
+  # https://raw.githubusercontent.com/antirez/redis/4.0/redis.conf
+  master:
+    image: redis:4.0.8-alpine
+    ports:
+      - 6379:6379
+    volumes:
+      - type: volume
+        source: master-data
+        target: /data
+    command: [
+      '--requirepass "${REDIS_PWD}"',
+      '--masterauth "${REDIS_PWD}"',
+      '--maxmemory 512mb',
+      '--maxmemory-policy volatile-ttl',
+      '--save ""',
+    ]
+
+
+  node-1: &node
+    image: redis:4.0.8-alpine
+    depends_on:
+      - master
+    ports:
+      - 6380:6380
+    volumes:
+      - type: volume
+        source: node-1-data
+        target: /data
+      - type: volume
+        source: node-1-data
+        target: /tmp
+    command: [
+      '--port 6380',
+      '--requirepass "${REDIS_PWD}"',
+      '--slaveof master 6379',
+      '--masterauth "${REDIS_PWD}"',
+      '--save ""',
+    ]
+    links:
+      - master:${SENTINEL_MASTER_NAME}
+
+  node-2: 
+    <<: *node
+    ports:
+      - 6381:6381
+    volumes:
+      - type: volume
+        source: node-2-data
+        target: /data
+      - type: volume
+        source: node-2-data
+        target: /tmp
+    command: [
+      '--port 6381',
+      '--requirepass "${REDIS_PWD}"',
+      '--slaveof master 6379',
+      '--masterauth "${REDIS_PWD}"',
+      '--save ""',
+    ]
+
+  sentinel-1: &sentinel
+    build:
+      context: ./sentinel
+      dockerfile: Dockerfile-sentinel
+    image: redis-sentinel:dev
+    environment:
+      - SENTINEL_REDIS_PWD=${REDIS_PWD}
+      - SENTINEL_REDIS_IP=${SENTINEL_MASTER_NAME}
+      - SENTINEL_QUORUM=2
+      - SENTINEL_DOWN_AFTER=3000
+    command: [
+      '${SENTINEL_CONF_PATH}',
+      '--sentinel'
+    ]
+    depends_on:
+      - master
+      - node-1
+      - node-2
+    links:
+      - master:${SENTINEL_MASTER_NAME}
+      - node-1
+      - node-2
+  sentinel-2:
+    <<: *sentinel
+  sentinel-3:
+    <<: *sentinel
+
+  nginx:
+    image: nginx:1.13.9-alpine
+    ports:
+      - 26379:26379
+    volumes:
+      - type: bind
+        source: ./nginx/nginx.conf
+        target: /etc/nginx/nginx.conf
+        read_only: true
+    depends_on:
+      - sentinel-1
+      - sentinel-2
+      - sentinel-3
+
+
+volumes:
+  master-data:
+  node-1-data:
+  node-2-data:
+
