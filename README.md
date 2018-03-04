@@ -110,7 +110,7 @@ master:
 
 详细可用参数请查看 sentinel 目录下的 `sentinel.conf.sample` 文件。由于容器使用的配置文件是运行时根据环境变量生成的，因此使用 `environment` 进行配置，可用环境变量请查看文档 Sentinel 部分。
 
-由于最后使用了 Nginx 作为 Sentinel 实例的代理，因此 Sentinel 容器不需要对外访问。
+最后使用了 Nginx 作为 Sentinel 实例的代理，因此 Sentinel 容器不需要对外访问。
 
 ```
 sentinel-1: &sentinel
