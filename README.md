@@ -1,6 +1,6 @@
 # 说明
 
-使用 Docker Compose 部署基于 Sentinel 的高可用 Redis 集群。
+使用 Docker Compose 本地部署基于 Sentinel 的高可用 Redis 集群。
 
 项目地址：[https://github.com/TomCzHen/redis-sentinel-sample](https://github.com/TomCzHen/redis-sentinel-sample)
 
