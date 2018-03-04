@@ -22,7 +22,7 @@
 
 [Sentinel, Docker, NAT, and possible issues](https://redis.io/topics/sentinel#sentinel-docker-nat-and-possible-issues)
 
-将容器端口 `EXPOSE` 时，Sentinel 所发现的 masters 连接信息（IP 和 端口）对客户端来说不一定可用。
+将容器端口 `EXPOSE` 时，Sentinel 所发现的 master/slave 连接信息（IP 和 端口）对客户端来说不一定可用。
 
 例如：将 Reids 实例端口 `6379` `EXPOSE` 为 `16379`, Sentinel 容器使用 `LINK` 的方式访问 Redis 容器，那么对于 Sentinel 容器 `6379` 端口是可用的，但对于外部客户端是不可用的。
 
@@ -110,7 +110,7 @@ master:
 
 详细可用参数请查看 sentinel 目录下的 `sentinel.conf.sample` 文件。由于容器使用的配置文件是运行时根据环境变量生成的，因此使用 `environment` 进行配置，可用环境变量请查看文档 Sentinel 部分。
 
-由于最后使用了 Nginx 最为 Sentinel 实例的代理，因此 Sentinel 容器不需要对外访问。
+由于最后使用了 Nginx 作为 Sentinel 实例的代理，因此 Sentinel 容器不需要对外访问。
 
 ```
 sentinel-1: &sentinel
