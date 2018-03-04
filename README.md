@@ -60,10 +60,10 @@ if [ ! -e ${SENTINEL_CONF_PATH} ]; then
     chown redis:redis /etc/redis/sentinel.conf
 fi
 ...
+```
 
 修改配置 Sentinel 的环境变量后需要重新创建容器才能生效。
 
-```
 #### 可用环境变量
 
 ```shell
